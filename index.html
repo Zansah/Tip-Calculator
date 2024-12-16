@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tip Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .tip-options {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .tip-btn {
+      background-color: #3A78F2;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      padding: 10px 20px;
+      cursor: pointer;
+      width: 18%;
+    }
+
+    .tip-btn:hover {
+      background-color: #3568D4;
+    }
+
+    .custom-tip {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Tip Calculator</h1>
+
+    <input type="number" id="billAmount" placeholder="Enter bill amount" />
+
+    <div class="tip-options">
+      <button class="tip-btn" onclick="setTip(15)">15%</button>
+      <button class="tip-btn" onclick="setTip(18)">18%</button>
+      <button class="tip-btn" onclick="setTip(20)">20%</button>
+      <button class="tip-btn" onclick="setTip(25)">25%</button>
+      <button class="tip-btn" onclick="setTip('custom')">Custom</button>
+    </div>
+
+    <div class="custom-tip" id="customTipInput" style="display: none;">
+      <input type="number" id="customTip" placeholder="Enter custom tip percentage" />
+    </div>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    let selectedTip = null;
+
+    function setTip(value) {
+      if (value === 'custom') {
+        document.getElementById('customTipInput').style.display = 'block';
+        selectedTip = null;
+      } else {
+        document.getElementById('customTipInput').style.display = 'none';
+        selectedTip = value;
+        calculateTip();
+      }
+    }
+
+    document.getElementById('customTip').addEventListener('input', () => {
+      selectedTip = parseFloat(document.getElementById('customTip').value);
+      calculateTip();
+    });
+
+    function calculateTip() {
+      const billAmount = parseFloat(document.getElementById('billAmount').value);
+
+      if (isNaN(billAmount) || billAmount <= 0) {
+        alert('Please enter a valid bill amount.');
+        return;
+      }
+
+      if (isNaN(selectedTip) || selectedTip <= 0) {
+        alert('Please enter a valid tip percentage.');
+        return;
+      }
+
+      const tipAmount = (billAmount * selectedTip) / 100;
+      const totalAmount = billAmount + tipAmount;
+
+      document.getElementById('result').innerHTML = `
+        <p><strong>Tip:</strong> $${tipAmount.toFixed(2)}</p>
+        <p><strong>Total Amount:</strong> $${totalAmount.toFixed(2)}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
